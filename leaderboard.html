@@ -1,0 +1,52 @@
+<head>
+  <title>Leaderboard</title>
+</head>
+
+<body>
+  <div id="outer">
+    {{> leaderboard}}
+  </div>
+  <div id="outer">
+    {{> gameboard}}
+  </div>
+</body>
+
+<template name="leaderboard">
+  <div class="header">
+    {{loginButtons}}
+  </div>
+  
+  <div class="leaderboard">
+    {{#each players}}
+      {{> player}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="player">
+  <div class="player {{selected}} {{ active }}">
+    <span class="name">{{name}}</span>
+    <span class="score">{{score}}</span>
+
+    <br /> {{games_won}} won, {{games_lost}} lost
+    {{#if selected}}
+      {{#if currentUser}}
+        {{#unless me}}
+        - <a class="link victory" href="#">claim my victory</a>
+        {{/unless}}
+      {{/if}}
+    {{/if}}
+  </div>
+</template>
+
+<template name="gameboard">
+  <div class="gameboard">
+    {{#each games}}
+      {{> game}}<br />
+    {{/each}}
+  </div>
+</template>
+
+<template name="game">
+  {{winner.name}} won against {{loser.name}}
+</template>
