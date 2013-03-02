@@ -8,5 +8,5 @@ insecure
 preserve-inputs
 accounts-base
 accounts-ui
-email
 accounts-facebook
+email

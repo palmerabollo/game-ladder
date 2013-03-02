@@ -59,3 +59,7 @@ body {
     margin-top: 2em;
     color: #777;
 }
+
+.gameboard .timeago {
+    color: #ccc;
+}

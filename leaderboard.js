@@ -22,12 +22,17 @@ if (Meteor.isClient) {
   };
 
   Template.player.me = function () {
-    return false; // TODO disable "claim victory" against myself
+    return this.meteor_id === Meteor.userId();
   };
 
   Template.player.active = function () {
     return this.games_won + this.games_lost > 0 ? '' : 'inactive';
   };
+
+  Template.game.timeago = function() {
+    return moment(this.date).fromNow();
+  }
+
   Template.leaderboard.events({
     'click .victory': function () {
       var result = prompt("Indique el resultado del partido. Puntos del ganador siempre a la izquierda. Ejemplo: 21-16","21-19");
@@ -130,6 +135,7 @@ if (Meteor.isServer) {
   }
 
   Meteor.startup(function() {
+    // resetRanking()
     if (Players.find().count() === 0) {
       insertDemoData();
     }
