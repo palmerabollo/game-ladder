@@ -22,7 +22,7 @@ if (Meteor.isClient) {
   };
 
   Template.player.me = function () {
-    return this.meteor_id === Meteor.userId();
+    return this.meteor_id === Meteor.userId() ? "me" : '';
   };
 
   Template.player.active = function () {

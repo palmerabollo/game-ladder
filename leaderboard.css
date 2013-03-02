@@ -47,6 +47,10 @@ body {
     color: black;
 }
 
+.player.me {
+    background-color: lightblue;
+}
+
 .player.inactive {
     color: #ccc;
 }
