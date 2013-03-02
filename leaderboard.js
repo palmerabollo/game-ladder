@@ -29,13 +29,6 @@ if (Meteor.isClient) {
     return this.games_won + this.games_lost > 0 ? '' : 'inactive';
   };
 
-  // http://www.thepoolclub.com/gs/elorank.php
-  // http://gobase.org/studying/articles/elo/
-  function elo(winner, loser) {
-    var elodiff = DEFAULT_ELO - Math.round(1 / (1 + Math.pow(10, (loser - winner) / 400)) * DEFAULT_ELO);
-    return elodiff;
-  }
-
   Template.leaderboard.events({
     'click .victory': function () {
       if (confirm('No hay vuelta atrás. ¿Deseas registrar una victoria?')) {
@@ -55,8 +48,8 @@ if (Meteor.isClient) {
         }
 
         var player = Players.findOne(Session.get("selected_player"));
-        
-        var elodiff = elo(me.score, player.score);
+
+        var elodiff = calculateElo(me.score, player.score);
         Players.update(Session.get("selected_player"), {$inc: {score: -elodiff, games_lost: 1}});
         Players.update({meteor_id: Meteor.userId()}, {$inc: {score: elodiff, games_won: 1}});
 
