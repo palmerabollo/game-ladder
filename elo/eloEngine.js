@@ -2,8 +2,8 @@ var DEFAULT_ELO = 1000;
 var ELO_DIVIDE_FACTOR = 400.0;
 var ELO_PUSILLANIMITY = 10; // Less value => more aggressive points variance.
 
-function calculateElo(winner, loser, points) {
-    var adjustedResultDiff = calculateResultDiff(winner, loser) * (humiliationWeight(points)/10);
+function calculateElo(winner, loser, points_diff) {
+    var adjustedResultDiff = calculateResultDiff(winner, loser) * (humiliationWeight(points_diff) / 10);
     var elodiff = Math.round(adjustedResultDiff * DEFAULT_ELO/ELO_PUSILLANIMITY);
     return elodiff;
 }
@@ -21,15 +21,12 @@ function calculateResultDiff(winner, loser){
     return result;
 }
 
-function humiliationWeight(points) {
-    var difference = points[0] - points[1];
-
-    //The most common case at the top in order to get the result earlier.
-    if (difference >2 && difference < 6) {
+function humiliationWeight(points_diff) {
+    if (points_diff > 2 && points_diff < 6) {
         return 12;
-    } else if (difference >= 6 && difference <9) {
+    } else if (points_diff >= 6 && points_diff < 9) {
         return 14;
-    } else if (difference <= 2) {
+    } else if (points_diff <= 2) {
         return 9;
     } else {
         return 16;
