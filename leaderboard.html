@@ -36,8 +36,14 @@
         {{/unless}}
       {{/if}}
     {{/if}}
-    <br /> {{points_scored}} points scored, {{points_conceded}} points conceded
+    {{>configuration}}
   </div>
+</template>
+
+<template name="configuration">
+    {{#if humiliation_mode}}
+      <br /> {{points_scored}} points scored, {{points_conceded}} points conceded
+    {{/if}}
 </template>
 
 <template name="gameboard">
