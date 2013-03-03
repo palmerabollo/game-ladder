@@ -1,8 +1,7 @@
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 200;
-    margin: 50px 0;
-    padding: 0;
+    margin: 2em 0;
 }
 
 .link {
@@ -22,7 +21,7 @@ body {
 
 .player {
     cursor: pointer;
-    padding: 5px;
+    padding: 0.8em;
 }
 
 .player .name {
@@ -31,31 +30,27 @@ body {
     font-size: 1.75em;
 }
 
+.player .avatar {
+    margin-right: 1em;
+}
+
 .player .score {
     display: inline-block;
     width: 100px;
     text-align: right;
     font-size: 1.75em;
-    color: #777;
+    color: black;
 }
 
 .player.selected {
     background-color: yellow;
 }
 
-.player.selected .score {
-    color: black;
-}
-
 .player.me {
-    background-color: lightblue;
+    background-color: #eef;
 }
 
 .player.inactive {
-    color: #ccc;
-}
-
-.player.inactive .score{
     color: #ccc;
 }
 

@@ -1,6 +1,6 @@
 var DEFAULT_ELO = 1000;
 var ELO_DIVIDE_FACTOR = 400.0;
-var ELO_PUSILLANIMITY = 10; //Less value more aggressive points variance.
+var ELO_PUSILLANIMITY = 10; // Less value => more aggressive points variance.
 
 function calculateElo(winner, loser, points) {
     var adjustedResultDiff = calculateResultDiff(winner, loser) * (humiliationWeight(points)/10);
@@ -20,7 +20,6 @@ function calculateResultDiff(winner, loser){
     var result = 1 - expectedResult;
     return result;
 }
-
 
 function humiliationWeight(points) {
     var difference = points[0] - points[1];
