@@ -1,6 +1,4 @@
-var DEFAULT_ELO = 1000;
 var HUMILIATION_MODE = false;
-
 
 Players = new Meteor.Collection("players");
 Games = new Meteor.Collection("games");
@@ -35,14 +33,16 @@ if (Meteor.isClient) {
     return moment(this.date).fromNow();
   }
 
-
   Template.configuration.humiliation_mode = function() {
     return HUMILIATION_MODE;
   }
 
   Template.leaderboard.events({
     'click .victory': function () {
+      var player = Players.findOne(Session.get("selected_player"));
+
       if (HUMILIATION_MODE) {
+        // TODO use an html dialog instead of an ugly prompt.
         var result = prompt("Indique el resultado del partido. Puntos del ganador siempre a la izquierda. Ejemplo: 21-16","21-19");
         var points = result.split("-");
         if ((points.length == 2) && (isNormalInteger(points[0])) && (isNormalInteger(points[1])) && (points[0]>points[1])) {
@@ -50,8 +50,6 @@ if (Meteor.isClient) {
             var me = Players.findOne({meteor_id: Meteor.userId()});
 
             me = checkMeUser(me);
-
-            var player = Players.findOne(Session.get("selected_player"));
 
             var elodiff = calculateElo(me.score, player.score, points);
             var winnerPoints = parseInt(points[0]);
@@ -66,12 +64,10 @@ if (Meteor.isClient) {
           confirm('Los datos del resultado son incorrectos, Por favor inténtelo de nuevo.');
         }
       } else {
-        if (confirm('No hay vuelta atrás. ¿Deseas registrar una victoria?')) {
+        if (confirm('No hay vuelta atrás. ¿Deseas registrar una victoria contra ' + player.name + '?')) {
           var me = Players.findOne({meteor_id: Meteor.userId()});
 
           me = checkMeUser(me);
-
-          var player = Players.findOne(Session.get("selected_player"));
 
           var elodiff = calculateElo(me.score, player.score);
           Players.update(Session.get("selected_player"), {$inc: {score: -elodiff, games_lost: 1}});

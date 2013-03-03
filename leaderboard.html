@@ -1,15 +1,17 @@
-<head>
-  <title>Leaderboard</title>
-</head>
+<html>
+  <head>
+    <title>ladderboard · claim your victory</title>
+  </head>
 
-<body>
-  <div class="outer">
-    {{> leaderboard}}
-  </div>
-  <div class="outer">
-    {{> gameboard}}
-  </div>
-</body>
+  <body>
+    <div class="outer">
+      {{> leaderboard}}
+    </div>
+    <div class="outer">
+      {{> gameboard}}
+    </div>
+  </body>
+</html>
 
 <template name="leaderboard">
   <div class="header">
@@ -32,11 +34,11 @@
     {{#if selected}}
       {{#if currentUser}}
         {{#unless me}}
-        - <a class="link victory" href="#">claim my victory</a>
+        · <a class="link victory" href="#">claim my victory</a>
         {{/unless}}
       {{/if}}
     {{/if}}
-    {{>configuration}}
+    {{> configuration}}
   </div>
 </template>
 
