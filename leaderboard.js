@@ -122,8 +122,9 @@ if (Meteor.isServer) {
     }); 
   });
 
-  function resetPlayers() {
+  function reset() {
     Players.remove({});
+    Games.remove({});
   }
 
   function resetRanking() {
@@ -151,7 +152,7 @@ if (Meteor.isServer) {
 
   Meteor.startup(function() {
     // resetRanking();
-    // resetPlayers();
+    // reset();
 
     if (Players.find().count() === 0) {
       insertDemoData();
