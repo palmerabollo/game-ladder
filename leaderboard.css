@@ -15,7 +15,7 @@ body {
     width: 520px;
 }
 
-#outer {
+.outer {
     width: 600px;
     margin: 0 auto;    
 }
