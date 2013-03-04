@@ -1,13 +1,17 @@
-var DEFAULT_ELO = 1000;
 var HUMILIATION_MODE = false;
-
 
 Players = new Meteor.Collection("players");
 Games = new Meteor.Collection("games");
 
 if (Meteor.isClient) {
+  Meteor.autorun(function () {
+    Meteor.subscribe('players');
+    Meteor.subscribe('games');
+    Meteor.subscribe('user');
+  });
+
   Template.gameboard.games = function () {
-    return Games.find({}, {sort: {date: -1}, limit: 20});
+    return Games.find({}, {sort: {date: -1}});
   };
 
   Template.leaderboard.players = function () {
@@ -31,133 +35,125 @@ if (Meteor.isClient) {
     return this.games_won + this.games_lost > 0 ? '' : 'inactive';
   };
 
+  Template.player.humiliation_mode = function() {
+    return HUMILIATION_MODE;
+  }
+
   Template.game.timeago = function() {
     return moment(this.date).fromNow();
   }
 
-
-  Template.configuration.humiliation_mode = function() {
-    return HUMILIATION_MODE;
-  }
-
   Template.leaderboard.events({
     'click .victory': function () {
-      if (HUMILIATION_MODE) {
-        var result = prompt("Indique el resultado del partido. Puntos del ganador siempre a la izquierda. Ejemplo: 21-16","21-19");
-        var points = result.split("-");
-        if ((points.length == 2) && (isNormalInteger(points[0])) && (isNormalInteger(points[1])) && (points[0]>points[1])) {
-          if (confirm('No hay vuelta atrás. ¿Deseas registrar una victoria de ' + result +'?')) {
-            var me = Players.findOne({meteor_id: Meteor.userId()});
+      var player = Players.findOne(Session.get("selected_player"));
+      var me = Players.findOne({meteor_id: Meteor.userId()});
 
-            me = checkMeUser(me);
+      var points_winner = $('#winner_points_' + Session.get("selected_player")).val();
+      var points_loser = $('#loser_points_' + Session.get("selected_player")).val();
+      
+      if (points_winner || points_loser) {
+        if (isNormalInteger(points_winner) && isNormalInteger(points_loser)) {
+            var wp = parseInt(points_winner);
+            var lp = parseInt(points_loser);
 
-            var player = Players.findOne(Session.get("selected_player"));
+            if (wp <= lp) {
+              alert('Wrong results. Please try again.');
+              return;
+            }
 
-            var elodiff = calculateElo(me.score, player.score, points);
-            var winnerPoints = parseInt(points[0]);
-            var loserPoints = parseInt(points[1]);
-
-            Players.update(Session.get("selected_player"), {$inc: {score: -elodiff, games_lost: 1, points_scored:loserPoints, points_conceded:winnerPoints}});
-            Players.update({meteor_id: Meteor.userId()}, {$inc: {score: elodiff,  games_won: 1, points_scored:winnerPoints, points_conceded:loserPoints}});
-            Games.insert({ winner: me, loser: player, date: new Date() });
-          }
+            var elodiff = calculateElo(me.score, player.score, wp - lp);
         } else {
-          //Jugará bien al ping pong, pero no sabe teclear. :)
-          confirm('Los datos del resultado son incorrectos, Por favor inténtelo de nuevo.');
+          alert('Wrong result format. Please try again.');
+          return;
         }
       } else {
-        if (confirm('No hay vuelta atrás. ¿Deseas registrar una victoria?')) {
-          var me = Players.findOne({meteor_id: Meteor.userId()});
-
-          me = checkMeUser(me);
-
-          var player = Players.findOne(Session.get("selected_player"));
-
-          var elodiff = calculateElo(me.score, player.score);
-          Players.update(Session.get("selected_player"), {$inc: {score: -elodiff, games_lost: 1}});
-          Players.update({meteor_id: Meteor.userId()}, {$inc: {score: elodiff, games_won: 1}});
-
-          Games.insert({ winner: me, loser: player, date: new Date() });
-        }
+        var elodiff = calculateElo(me.score, player.score);
       }
+
+      if (confirm('Do you confirm you won against ' + player.name + '?')) {
+        Players.update(Session.get("selected_player"), {$inc: {score: -elodiff, games_lost: 1, points_scored: lp, points_conceded: wp}});
+        Players.update({meteor_id: Meteor.userId()}, {$inc: {score: elodiff,  games_won: 1, points_scored: wp, points_conceded: lp}});
+        Games.insert({ winner: me, loser: player, date: new Date() });
+      }
+    },
+    'click .victory_advanced': function() {
+      $('#result_' + Session.get("selected_player")).show();
     }
   });
-
-  function checkMeUser(me){
-    if (!me) {
-      me = {
-            meteor_id: Meteor.userId(),
-            name: Meteor.user().profile.name,
-            score: DEFAULT_ELO,
-            games_won: 0,
-            games_lost: 0,
-            points_scored:0,
-            points_conceded:0,
-            creation_date: new Date()
-        };
-      Players.insert(me);
-    }
-    return me;
-  }
-
 
   Template.player.events({
     'click': function () {
       Session.set("selected_player", this._id);
     }
   });
-} // end client
+}
 
 if (Meteor.isServer) {
+  Meteor.publish("games", function () {
+    return Games.find({}, {sort: {date: -1}, limit: 20});
+  });
+
+  Meteor.publish("players", function () {
+    return Players.find();
+  });
+
+  Meteor.autorun(function () {
+    Meteor.publish("user", function() {
+      if (this.userId) {
+        var me = Players.findOne({meteor_id: this.userId});
+        var user = Meteor.users.findOne({_id: this.userId});
+
+        if (!me) {
+          // XXX race conditions might arise
+          me = {
+                meteor_id: this.userId,
+                name: user.profile.name,
+                score: DEFAULT_ELO,
+                games_won: 0,
+                games_lost: 0,
+                points_scored: 0,
+                points_conceded: 0,
+                creation_date: new Date(),
+                avatar_url: "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=small"
+            };
+          Players.insert(me);
+        };
+      }
+    }); 
+  });
+
+  function reset() {
+    Players.remove({});
+    Games.remove({});
+  }
+
   function resetRanking() {
     Players.update({}, {$set: {score: 1000, games_won: 0, games_lost: 0, points_scored:0, points_conceded:0}}, {multi: true});
   }
 
   function insertDemoData() {
-    Players.insert({
-      meteor_id: "foo",
-      name: "Pedro Picapiedra",
-      score: DEFAULT_ELO,
-      games_won: 0,
-      games_lost: 0,
-      points_scored:0,
-      points_conceded:0,
-      creation_date: new Date()
-    });
-    Players.insert({
-      meteor_id: "bar",
-      name: "Pablo Marmol",
-      score: DEFAULT_ELO,
-      games_won: 0,
-      games_lost: 0,
-      points_scored:0,
-      points_conceded:0,
-      creation_date: new Date()
-    });
-    Players.insert({
-      meteor_id: "mar",
-      name: "Mario Bros",
-      score: DEFAULT_ELO,
-      games_won: 0,
-      games_lost: 0,
-      points_scored:0,
-      points_conceded:0,
-      creation_date: new Date()
-    });
-    Players.insert({
-      meteor_id: "lui",
-      name: "Luigi Bros",
-      score: DEFAULT_ELO,
-      games_won: 0,
-      games_lost: 0,
-      points_scored:0,
-      points_conceded:0,
-      creation_date: new Date()
-    });
+    var createEmpty = function(name) {
+      Players.insert({
+        meteor_id: "demo_id_" + name,
+        name: name,
+        score: DEFAULT_ELO,
+        games_won: 0,
+        games_lost: 0,
+        points_scored: 0,
+        points_conceded: 0,
+        creation_date: new Date(),
+        avatar_url: "http://www.gravatar.com/avatar/HASH?s=50&d=identicon&r=PG"
+      });
+    }
+
+    createEmpty("Mario Bros");
+    createEmpty("Luigi Bros");
   }
 
   Meteor.startup(function() {
-    // resetRanking()
+    // resetRanking();
+    // reset();
+
     if (Players.find().count() === 0) {
       insertDemoData();
     }

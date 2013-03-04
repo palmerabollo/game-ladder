@@ -1,12 +1,12 @@
 <head>
-  <title>Leaderboard</title>
+  <title>ladderboard · claim your victory</title>
 </head>
 
 <body>
-  <div id="outer">
+  <div class="outer">
     {{> leaderboard}}
   </div>
-  <div id="outer">
+  <div class="outer">
     {{> gameboard}}
   </div>
 </body>
@@ -25,25 +25,43 @@
 
 <template name="player">
   <div class="player {{selected}} {{ active }} {{ me }}">
+    <span class="avatar">
+      {{#if avatar_url}}
+        <img src="{{avatar_url}}" />
+      {{/if}}
+    </span>
     <span class="name">{{name}}</span>
     <span class="score">{{score}}</span>
 
-    <br /> {{games_won}} won, {{games_lost}} lost
+    <br />
+
+    {{games_won}} won, {{games_lost}} lost ·
+    {{#if humiliation_mode}}
+      {{points_scored}} points scored, {{points_conceded}} points conceded
+    {{/if}}
+    {{#unless humiliation_mode}}
+      <span class="inactive">points not tracked</span>
+    {{/unless}}
+    
     {{#if selected}}
       {{#if currentUser}}
         {{#unless me}}
-        - <a class="link victory" href="#">claim my victory</a>
+          <br />
+          <a class="link victory" href="#">claim my victory</a>
+
+          {{#if humiliation_mode}}
+          ·
+          <a class="link victory_advanced" href="#">optional info...</a>
+          <span id="result_{{_id}}" class="hidden">
+            <input type="text" size="2" maxlength="2" id="winner_points_{{_id}}" />
+            -
+            <input type="text" size="2" maxlength="2" id="loser_points_{{_id}}" />
+          </span>
+          {{/if}}
         {{/unless}}
       {{/if}}
     {{/if}}
-    {{>configuration}}
   </div>
-</template>
-
-<template name="configuration">
-    {{#if humiliation_mode}}
-      <br /> {{points_scored}} points scored, {{points_conceded}} points conceded
-    {{/if}}
 </template>
 
 <template name="gameboard">
