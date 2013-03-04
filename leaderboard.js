@@ -131,31 +131,8 @@ if (Meteor.isServer) {
     Players.update({}, {$set: {score: 1000, games_won: 0, games_lost: 0, points_scored:0, points_conceded:0}}, {multi: true});
   }
 
-  function insertDemoData() {
-    var createEmpty = function(name) {
-      Players.insert({
-        meteor_id: "demo_id_" + name,
-        name: name,
-        score: DEFAULT_ELO,
-        games_won: 0,
-        games_lost: 0,
-        points_scored: 0,
-        points_conceded: 0,
-        creation_date: new Date(),
-        avatar_url: "http://www.gravatar.com/avatar/HASH?s=50&d=identicon&r=PG"
-      });
-    }
-
-    createEmpty("Mario Bros");
-    createEmpty("Luigi Bros");
-  }
-
   Meteor.startup(function() {
     // resetRanking();
     // reset();
-
-    if (Players.find().count() === 0) {
-      insertDemoData();
-    }
   })
 }
