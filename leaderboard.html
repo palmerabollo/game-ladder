@@ -36,14 +36,16 @@
 
     <br />
 
-    {{games_won}} won, {{games_lost}} lost ·
+    {{games_won}} won · {{games_lost}} lost ·
+
     {{#if humiliation_mode}}
-      {{points_scored}} points scored, {{points_conceded}} points conceded
+      +{{points_scored}} -{{points_conceded}} ·
     {{/if}}
-    {{#unless humiliation_mode}}
-      <span class="inactive">points not tracked</span>
-    {{/unless}}
-    
+
+    <span class="inactive">
+      {{#if date_lastgame}}last game {{timeago}}{{/if}}
+    </span>
+
     {{#if selected}}
       {{#if currentUser}}
         {{#unless me}}

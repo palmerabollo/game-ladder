@@ -5,9 +5,7 @@ Games = new Meteor.Collection("games");
 
 if (Meteor.isClient) {
   Meteor.autorun(function () {
-    Meteor.subscribe('players');
-    Meteor.subscribe('games');
-    Meteor.subscribe('user');
+    ['players', 'games', 'user'].forEach(function(col) { Meteor.subscribe(col) });
   });
 
   Template.gameboard.games = function () {
@@ -15,12 +13,7 @@ if (Meteor.isClient) {
   };
 
   Template.leaderboard.players = function () {
-    return Players.find({}, {sort: {score: -1, name: 1}});
-  };
-
-  Template.leaderboard.selected_name = function () {
-    var player = Players.findOne(Session.get("selected_player"));
-    return player && player.name;
+    return Players.find({}, {sort: {score: -1}});
   };
 
   Template.player.selected = function () {
@@ -32,18 +25,31 @@ if (Meteor.isClient) {
   };
 
   Template.player.active = function () {
-    return this.games_won + this.games_lost > 0 ? '' : 'inactive';
+    var has_played = this.games_won + this.games_lost > 0;
+    if (has_played) {
+      // var is_frequent = moment().subtract('days', 7).isAfter(this.date_lastgame);
+      var is_frequent = true; // XXX wait 7 days before uncommenting this in tef.meteor
+      return is_frequent ? '' : 'inactive';
+    }
+    return 'inactive';
   };
 
   Template.player.humiliation_mode = function() {
     return HUMILIATION_MODE;
   }
 
+  Template.player.timeago = function() {
+    return this.date_lastgame ? moment(this.date_lastgame).fromNow() : '';
+  }
+
   Template.game.timeago = function() {
     return moment(this.date).fromNow();
   }
 
-  Template.leaderboard.events({
+  Template.player.events({
+    'click': function () {
+      Session.set("selected_player", this._id);
+    },
     'click .victory': function () {
       var player = Players.findOne(Session.get("selected_player"));
       var me = Players.findOne({meteor_id: Meteor.userId()});
@@ -70,20 +76,15 @@ if (Meteor.isClient) {
         var elodiff = calculateElo(me.score, player.score);
       }
 
-      if (confirm('Do you confirm you won against ' + player.name + '?')) {
-        Players.update(Session.get("selected_player"), {$inc: {score: -elodiff, games_lost: 1, points_scored: lp, points_conceded: wp}});
-        Players.update({meteor_id: Meteor.userId()}, {$inc: {score: elodiff, games_won: 1, points_scored: wp, points_conceded: lp}});
-        Games.insert({ winner: me, loser: player, date: new Date(), elodiff: elodiff });
+      if (confirm('Do you confirm you victory against ' + player.name + '?')) {
+        var now = new Date();
+        Players.update(Session.get("selected_player"), {$set: {date_lastgame: now}, $inc: {score: -elodiff, games_lost: 1, points_scored: lp, points_conceded: wp}});
+        Players.update({meteor_id: Meteor.userId()}, {$set: {date_lastgame: now}, $inc: {score: elodiff, games_won: 1, points_scored: wp, points_conceded: lp}});
+        Games.insert({ winner: me, loser: player, date: now, elodiff: elodiff });
       }
     },
     'click .victory_advanced': function() {
       $('#result_' + Session.get("selected_player")).show();
-    }
-  });
-
-  Template.player.events({
-    'click': function () {
-      Session.set("selected_player", this._id);
     }
   });
 }
@@ -94,7 +95,7 @@ if (Meteor.isServer) {
   });
 
   Meteor.publish("players", function () {
-    return Players.find();
+    return Players.find({});
   });
 
   Meteor.autorun(function () {
