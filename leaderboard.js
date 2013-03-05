@@ -72,8 +72,8 @@ if (Meteor.isClient) {
 
       if (confirm('Do you confirm you won against ' + player.name + '?')) {
         Players.update(Session.get("selected_player"), {$inc: {score: -elodiff, games_lost: 1, points_scored: lp, points_conceded: wp}});
-        Players.update({meteor_id: Meteor.userId()}, {$inc: {score: elodiff,  games_won: 1, points_scored: wp, points_conceded: lp}});
-        Games.insert({ winner: me, loser: player, date: new Date() });
+        Players.update({meteor_id: Meteor.userId()}, {$inc: {score: elodiff, games_won: 1, points_scored: wp, points_conceded: lp}});
+        Games.insert({ winner: me, loser: player, date: new Date(), elodiff: elodiff });
       }
     },
     'click .victory_advanced': function() {
