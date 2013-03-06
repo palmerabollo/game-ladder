@@ -9,6 +9,7 @@
   <div class="outer">
     {{> gameboard}}
   </div>
+  <div class="outer copyright">powered by <a href="https://github.com/palmerabollo/game-ladder">game-ladder</a></div>
 </body>
 
 <template name="leaderboard">
@@ -27,7 +28,7 @@
   <div class="player {{selected}} {{ active }} {{ me }}">
     <span class="avatar">
       {{#if avatar_url}}
-        <img src="{{avatar_url}}" />
+        <img class="avatar_img" src="{{avatar_url}}" />
       {{/if}}
     </span>
     <span class="name">{{name}}</span>
@@ -35,14 +36,16 @@
 
     <br />
 
-    {{games_won}} won, {{games_lost}} lost ·
+    {{games_won}} won · {{games_lost}} lost ·
+
     {{#if humiliation_mode}}
-      {{points_scored}} points scored, {{points_conceded}} points conceded
+      +{{points_scored}} -{{points_conceded}} ·
     {{/if}}
-    {{#unless humiliation_mode}}
-      <span class="inactive">points not tracked</span>
-    {{/unless}}
-    
+
+    <span class="inactive">
+      {{#if date_lastgame}}last game {{timeago}}{{/if}}
+    </span>
+
     {{#if selected}}
       {{#if currentUser}}
         {{#unless me}}
@@ -73,5 +76,5 @@
 </template>
 
 <template name="game">
-  {{winner.name}} won {{loser.name}} <span class="timeago"> · {{timeago}}</span>
+  {{winner.name}} won {{loser.name}} <span class="timeago"> · {{timeago}} · {{elodiff}} PELO</span>
 </template>

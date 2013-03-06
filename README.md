@@ -26,6 +26,11 @@ meteor
 meteor deploy my-own-subdomain.meteor.com
 </pre>
 
+Customize
+---------
+
+There are two available themes (minimal & colored).
+
 License
 -------
 Released under the "DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE"
