@@ -27,8 +27,7 @@ if (Meteor.isClient) {
   Template.player.active = function () {
     var has_played = this.games_won + this.games_lost > 0;
     if (has_played) {
-      // var is_frequent = moment().subtract('days', 7).isAfter(this.date_lastgame);
-      var is_frequent = true; // XXX wait 7 days before uncommenting this in tef.meteor
+      var is_frequent = moment().subtract('days', 7).isBefore(this.date_lastgame);
       return is_frequent ? '' : 'inactive';
     }
     return 'inactive';
