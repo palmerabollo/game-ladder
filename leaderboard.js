@@ -1,4 +1,5 @@
 var HUMILIATION_MODE = false;
+var BIGWIN_THRESHOLD = 50;
 
 Players = new Meteor.Collection("players");
 Games = new Meteor.Collection("games");
@@ -43,6 +44,10 @@ if (Meteor.isClient) {
 
   Template.game.timeago = function() {
     return moment(this.date).fromNow();
+  }
+
+  Template.game.bigwin = function() {
+    return this.elodiff > BIGWIN_THRESHOLD ? "bigwin" : "";
   }
 
   Template.player.events({
@@ -90,7 +95,7 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   Meteor.publish("games", function () {
-    return Games.find({}, {sort: {date: -1}, limit: 20});
+    return Games.find({}, {sort: {date: -1}, limit: 30});
   });
 
   Meteor.publish("players", function () {
