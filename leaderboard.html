@@ -1,9 +1,21 @@
 <head>
   <title>ladderboard · claim your victory</title>
-    <link rel="stylesheet" href="./styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./public/styles/common.css"/>
+    <link tag="pageStyle" type="text/css" href="./styles/minimal.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Convergence' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
+
+  <h1>Clasificación Ping Pong Teléfonica I+D Boecillo </h1>
+
+  <select id="switcherTheme">
+    <option selected="true" tag="./styles/minimal.css">Minimal</option>
+    <option tag="./styles/colored.css">Colored</option>
+  </select>
   <div class="outer">
     {{> leaderboard}}
   </div>
