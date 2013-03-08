@@ -1,0 +1,70 @@
+
+.hidden {
+    display: none;
+}
+
+.link {
+    cursor: pointer;
+}
+
+.header {
+    text-align: right;
+    margin-bottom: 2em;
+    width: 520px;
+}
+
+.outer {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.player.selected {
+    background-color: yellow;
+}
+
+.player.me {
+    background-color: #eef;
+}
+
+.player.name {
+    display: inline-block;
+    width: 400px;
+    font-size: 1.75em;
+}
+
+.player.avatar {
+    float: left;
+    margin-right: 1em;
+}
+
+.player.score {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    font-size: 1.75em;
+    color: black;
+}
+
+.inactive {
+    color: #999;
+}
+
+.gameboard.gameinfo{
+    color: #999;
+    float: right;
+}
+
+.gameboard.bigwin{
+    color: red;
+}
+
+.onfire-icon {
+    color: yellow;
+    text-shadow: 0px 0px 4px #555;
+}
+
+.copyright {
+    margin-top: 2em;
+    font-size: smaller;
+    color: #ccc;
+}
