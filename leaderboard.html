@@ -1,5 +1,6 @@
 <head>
   <title>ladderboard · claim your victory</title>
+    <link rel="stylesheet" href="./styles/font-awesome.min.css">
 </head>
 
 <body>
@@ -78,7 +79,7 @@
 <template name="game">
   {{winner.name}} won {{loser.name}}
   <span class="gameinfo {{ bigwin }}">
-    {{#if onfire}}&#10026; · {{/if}}
+    {{#if onfire}}<i class="icon-star onfire-icon"></i> · {{/if}}
     {{timeago}} · {{elodiff}} points
   </span>
 </template>
