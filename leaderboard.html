@@ -76,5 +76,9 @@
 </template>
 
 <template name="game">
-  {{winner.name}} won {{loser.name}} <span class="gameinfo {{ bigwin }}">{{timeago}} · {{elodiff}} points</span>
+  {{winner.name}} won {{loser.name}}
+  <span class="gameinfo {{ bigwin }}">
+    {{#if onfire}}&#10026; · {{/if}}
+    {{timeago}} · {{elodiff}} points
+  </span>
 </template>

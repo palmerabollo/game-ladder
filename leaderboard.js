@@ -1,5 +1,6 @@
 var HUMILIATION_MODE = false;
 var BIGWIN_THRESHOLD = 50;
+var ONFIRE_THRESHOLD = 3;
 
 Players = new Meteor.Collection("players");
 Games = new Meteor.Collection("games");
@@ -50,6 +51,10 @@ if (Meteor.isClient) {
     return this.elodiff > BIGWIN_THRESHOLD ? "bigwin" : "";
   }
 
+  Template.game.onfire = function() {
+    return this.winner.consecutive_wins > ONFIRE_THRESHOLD;
+  }
+
   Template.player.events({
     'click': function () {
       Session.set("selected_player", this._id);
@@ -82,8 +87,8 @@ if (Meteor.isClient) {
 
       if (confirm('Do you confirm you victory against ' + player.name + '?')) {
         var now = new Date();
-        Players.update(Session.get("selected_player"), {$set: {date_lastgame: now}, $inc: {score: -elodiff, games_lost: 1, points_scored: lp, points_conceded: wp}});
-        Players.update({meteor_id: Meteor.userId()}, {$set: {date_lastgame: now}, $inc: {score: elodiff, games_won: 1, points_scored: wp, points_conceded: lp}});
+        Players.update(Session.get("selected_player"), {$set: {date_lastgame: now, consecutive_wins: 0}, $inc: {score: -elodiff, games_lost: 1, points_scored: lp, points_conceded: wp}});
+        Players.update({meteor_id: Meteor.userId()}, {$set: {date_lastgame: now}, $inc: {score: elodiff, games_won: 1, points_scored: wp, points_conceded: lp, consecutive_wins: 1}});
         Games.insert({ winner: me, loser: player, date: now, elodiff: elodiff });
       }
     },
@@ -118,6 +123,7 @@ if (Meteor.isServer) {
                 games_lost: 0,
                 points_scored: 0,
                 points_conceded: 0,
+                consecutive_wins: 0,
                 creation_date: new Date(),
                 avatar_url: "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=small"
             };
