@@ -1,16 +1,32 @@
 <head>
   <title>ladderboard · claim your victory</title>
-    <link rel="stylesheet" href="./styles/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Convergence' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="./styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./styles/common.css"/>
+    <link rel="stylesheet" tag="pageStyle" type="text/css" href="./styles/minimal.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
 </head>
 
 <body>
+
+  <div id="top">
+      <img id="logo" src="./images/tticon.png" align="left">
+      <h1>Clasificación Ping Pong Teléfonica I+D Boecillo </h1>
+  </div>
+
   <div class="outer">
     {{> leaderboard}}
   </div>
   <div class="outer">
     {{> gameboard}}
   </div>
-  <div class="outer copyright">powered by <a href="https://github.com/palmerabollo/game-ladder">game-ladder</a></div>
+  <div class="outer copyright">powered by <a href="https://github.com/palmerabollo/game-ladder">game-ladder</a> Theme Switcher:
+    <select id="switcherTheme">
+      <option selected="true" tag="./styles/minimal.css">Minimal Theme</option>
+      <option tag="./styles/colored.css">Colored Theme</option>
+    </select>
+  </div>
 </body>
 
 <template name="leaderboard">

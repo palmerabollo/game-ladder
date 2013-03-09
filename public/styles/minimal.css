@@ -1,0 +1,23 @@
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 200;
+    margin: 2em 0;
+}
+
+h1 {
+    font-family: 'Convergence', sans-serif;
+    color: #000 ;
+    font-size: 48px;
+}
+
+.player {
+    border-bottom: 1px dotted lightgray;
+    cursor: pointer;
+    padding: 0.8em;
+}
+
+.gameboard {
+    margin-top: 2em;
+    color: #777;
+}
