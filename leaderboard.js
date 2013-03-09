@@ -1,5 +1,5 @@
 var HUMILIATION_MODE = false;
-var BIGWIN_THRESHOLD = 50;
+var BIGWIN_THRESHOLD = 70;
 var ONFIRE_THRESHOLD = 3;
 
 Players = new Meteor.Collection("players");
@@ -53,6 +53,10 @@ if (Meteor.isClient) {
 
   Template.game.onfire = function() {
     return this.winner.consecutive_wins > ONFIRE_THRESHOLD;
+  }
+
+  Template.game.trim = function(text) {
+    return text.replace(/^(.{15}[^\s]*).*/, "$1");
   }
 
   Template.player.events({
