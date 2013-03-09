@@ -43,22 +43,6 @@ if (Meteor.isClient) {
     return this.date_lastgame ? moment(this.date_lastgame).fromNow() : '';
   }
 
-  Template.game.timeago = function() {
-    return moment(this.date).fromNow();
-  }
-
-  Template.game.bigwin = function() {
-    return this.elodiff > BIGWIN_THRESHOLD ? "bigwin" : "";
-  }
-
-  Template.game.onfire = function() {
-    return this.winner.consecutive_wins > ONFIRE_THRESHOLD;
-  }
-
-  Template.game.trim = function(text) {
-    return text.replace(/^(.{15}[^\s]*).*/, "$1");
-  }
-
   Template.player.events({
     'click': function () {
       Session.set("selected_player", this._id);
@@ -97,7 +81,38 @@ if (Meteor.isClient) {
       }
     },
     'click .victory_advanced': function() {
-      $('#result_' + Session.get("selected_player")).show();
+      $('#result_ph_' + Session.get("selected_player")).show();
+    }
+  });
+
+  Template.game.timeago = function() {
+    return moment(this.date).fromNow();
+  }
+
+  Template.game.bigwin = function() {
+    return this.elodiff > BIGWIN_THRESHOLD ? "bigwin" : "";
+  }
+
+  Template.game.onfire = function() {
+    return this.winner.consecutive_wins > ONFIRE_THRESHOLD;
+  }
+
+  Template.game.trim = function(text) {
+    return text.replace(/^(.{15}[^\s]*).*/, "$1");
+  }
+
+  Template.game.count = function(array) {
+    return (array || []).length;
+  }
+
+  Template.game.events({
+    'click .comment': function () {
+      $('#comment_ph_' + this._id).show();
+    },
+    'click .send': function () {
+      var me = Players.findOne({meteor_id: Meteor.userId()});
+      var text = $('#comment_' + this._id).val();
+      Games.update({_id: this._id}, { $push: {comments: {author: me, text: text, date_creation: new Date()} } }); 
     }
   });
 }

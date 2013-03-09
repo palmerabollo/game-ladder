@@ -55,7 +55,7 @@
           {{#if humiliation_mode}}
           ·
           <a class="link victory_advanced" href="#">optional info...</a>
-          <span id="result_{{_id}}" class="hidden">
+          <span id="result_ph_{{_id}}" class="hidden">
             <input type="text" size="2" maxlength="2" id="winner_points_{{_id}}" />
             -
             <input type="text" size="2" maxlength="2" id="loser_points_{{_id}}" />
@@ -76,12 +76,21 @@
 </template>
 
 <template name="game">
-  {{trim winner.name}} won {{trim loser.name}}
+  {{trim winner.name}} won {{trim loser.name}} ·
+  
+  <a class="link comment">{{count comments}} comments</a>
+  <span id="comment_ph_{{_id}}" class="hidden">
+    <br />
+    <input type="text" size="70" maxlength="70" id="comment_{{_id}}" />
+    <a class="link send">send</a>
+
+    {{#each comments}}
+      <br />{{trim author.name}} said: {{text}}
+    {{/each}}
+  </span>
+
   <span class="gameinfo {{ bigwin }}">
     {{#if onfire}}&#10026; · {{/if}}
     {{timeago}} · {{elodiff}} points
   </span>
-  <!-- TODO
-  <a class="link comment">comment</a>
-  -->
 </template>
