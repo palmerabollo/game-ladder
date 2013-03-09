@@ -101,10 +101,6 @@ if (Meteor.isClient) {
     return text.replace(/^(.{15}[^\s]*).*/, "$1");
   }
 
-  Template.game.count = function(array) {
-    return (array || []).length;
-  }
-
   Template.game.events({
     'click .comment': function () {
       $('#comment_ph_' + this._id).show();

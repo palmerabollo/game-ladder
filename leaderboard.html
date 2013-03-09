@@ -78,20 +78,21 @@
 
 <template name="game">
   {{trim winner.name}} won {{trim loser.name}} ·
-  
-  <a class="link comment">{{count comments}} comments</a>
-  <span id="comment_ph_{{_id}}" class="hidden">
-    <br />
-    <input type="text" size="70" maxlength="70" id="comment_{{_id}}" />
-    <a class="link send">send</a>
-
-    {{#each comments}}
-      <br />{{trim author.name}} said: {{text}}
-    {{/each}}
-  </span>
 
   <span class="gameinfo {{ bigwin }}">
-    {{#if onfire}}<i class="icon-star onfire-icon"></i> · {{/if}}
-    {{timeago}} · {{elodiff}} points
+    {{#if onfire}}<i class="icon icon-star onfire-icon" /> · {{/if}}
+    {{timeago}} · {{elodiff}} points ·
+    <a class="comment"><i class="icon icon-reorder" /></a>
+  </span>
+
+  <span id="comment_ph_{{_id}}" class="comments hidden">
+    <input type="text" size="70" maxlength="70" id="comment_{{_id}}" />
+    <a class="link send">send it</a>
+  </span>
+
+  <span class="comments">
+    {{#each comments}}
+      <br /><i class="icon icon-quote-right" /> {{trim author.name}}: {{text}}
+    {{/each}}
   </span>
 </template>
