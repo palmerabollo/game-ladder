@@ -18,43 +18,44 @@
     margin: 0 auto;
 }
 
-.player.selected {
-    background-color: yellow;
-}
-
-.player.me {
-    background-color: #eef;
-}
-
-.player.name {
-    display: inline-block;
-    width: 400px;
-    font-size: 1.75em;
-}
-
-.player.avatar {
-    float: left;
-    margin-right: 1em;
-}
-
-.player.score {
-    display: inline-block;
-    width: 100px;
-    text-align: right;
-    font-size: 1.75em;
-    color: black;
-}
 
 .inactive {
     color: #999;
 }
 
-.gameboard.gameinfo{
+.player.selected {
+    background-color: yellow;
+}
+
+.me {
+    background-color: #eef;
+}
+
+.name {
+    display: inline-block;
+    width: 400px;
+    font-size: 1.75em;
+}
+
+.avatar {
+    float: left;
+    margin-right: 1em;
+}
+
+.score {
+    display: inline-block;
+    width: 90px;
+    text-align: right;
+    font-size: 1.75em;
+    color: black;
+}
+
+.gameinfo{
     color: #999;
     float: right;
 }
 
-.gameboard.bigwin{
+.bigwin{
     color: red;
 }
 
@@ -67,4 +68,15 @@
     margin-top: 2em;
     font-size: smaller;
     color: #ccc;
+}
+
+#top{
+    margin-left: 30px;
+    margin-top: -25px
+}
+
+#logo {
+    width: 70px;
+    height: 70px;
+    margin-top: -5px;
 }

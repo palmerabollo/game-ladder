@@ -5,6 +5,12 @@ body {
     margin: 2em 0;
 }
 
+h1 {
+    font-family: 'Convergence', sans-serif;
+    color: #000 ;
+    font-size: 48px;
+}
+
 .player {
     border-bottom: 1px dotted lightgray;
     cursor: pointer;
