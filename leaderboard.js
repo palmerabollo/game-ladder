@@ -1,6 +1,7 @@
 var HUMILIATION_MODE = false;
 var BIGWIN_THRESHOLD = 70;
 var ONFIRE_THRESHOLD = 3;
+var DAYS_INACTIVE_THRESHOLD = 7;
 
 Players = new Meteor.Collection("players");
 Games = new Meteor.Collection("games");
@@ -37,7 +38,7 @@ if (Meteor.isClient) {
   Template.player.active = function () {
     var has_played = this.games_won + this.games_lost > 0;
     if (has_played) {
-      var is_frequent = moment().subtract('days', 7).isBefore(this.date_lastgame);
+      var is_frequent = moment().subtract('days', DAYS_INACTIVE_THRESHOLD).isBefore(this.date_lastgame);
       return is_frequent ? '' : 'inactive';
     }
     return 'inactive';
