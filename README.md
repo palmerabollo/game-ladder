@@ -1,7 +1,7 @@
 Ladder Board
 ============
 
-The simplest **game ladder** out there. Less than 300 LOC. Built with meteor, the open-source platform for building top-quality web apps in a fraction of the time.
+The simplest **game ladder** out there. Built with meteor, the open-source platform for building top-quality web apps in a fraction of the time.
 
 
 How to run it

@@ -6,6 +6,10 @@ Players = new Meteor.Collection("players");
 Games = new Meteor.Collection("games");
 
 if (Meteor.isClient) {
+  Meteor.startup(function () {
+    plug_theme_switcher();
+  });
+
   Meteor.autorun(function () {
     ['players', 'games', 'user'].forEach(function(col) { Meteor.subscribe(col) });
   });
