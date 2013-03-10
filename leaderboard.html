@@ -54,7 +54,7 @@
     {{/if}}
 
     <span class="inactive">
-      {{#if date_lastgame}}last game {{timeago}}{{/if}}
+      {{#if date_lastgame}}last game {{timeago date_lastgame}}{{/if}}
     </span>
 
     {{#if selected}}
@@ -91,7 +91,7 @@
 
   <span class="gameinfo {{ bigwin }}">
     {{#if onfire}}<i class="icon icon-star onfire-icon" /> · {{/if}}
-    {{timeago}} · {{elodiff}} pelo
+    {{timeago date}} · {{elodiff}} pelo
 
     {{#if currentUser}}
       · <a class="comment"><i class="icon icon-reorder" /></a>

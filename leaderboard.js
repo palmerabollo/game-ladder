@@ -14,6 +14,10 @@ if (Meteor.isClient) {
     ['players', 'games', 'user'].forEach(function(col) { Meteor.subscribe(col) });
   });
 
+  Handlebars.registerHelper("timeago", function(date) {
+    return date ? moment(date).fromNow() : '';
+  });
+
   Template.gameboard.games = function () {
     return Games.find({}, {sort: {date: -1}});
   };
@@ -41,10 +45,6 @@ if (Meteor.isClient) {
 
   Template.player.humiliation_mode = function() {
     return HUMILIATION_MODE;
-  }
-
-  Template.player.timeago = function() {
-    return this.date_lastgame ? moment(this.date_lastgame).fromNow() : '';
   }
 
   Template.player.events({
@@ -88,10 +88,6 @@ if (Meteor.isClient) {
       $('#result_ph_' + Session.get("selected_player")).show();
     }
   });
-
-  Template.game.timeago = function() {
-    return moment(this.date).fromNow();
-  }
 
   Template.game.bigwin = function() {
     return this.elodiff > BIGWIN_THRESHOLD ? "bigwin" : "";
