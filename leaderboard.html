@@ -1,7 +1,6 @@
 <head>
   <title>ladderboard · claim your victory</title>
   <link rel="stylesheet" href="./styles/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="./styles/common.css"/>
   <link rel="stylesheet" type="text/css" tag="pageStyle" href="./styles/minimal.css">
   <script type="text/javascript" src="./js/main.js"></script>
 </head>
@@ -36,7 +35,7 @@
 </template>
 
 <template name="player">
-  <div class="player {{selected}} {{ active }} {{ me }}">
+  <div class="player {{selected}} {{ active }} {{ me }} rounded6">
     <span class="avatar">
       {{#if avatar_url}}
         <img class="avatar_img" src="{{avatar_url}}" />
@@ -79,7 +78,7 @@
 </template>
 
 <template name="gameboard">
-  <div class="gameboard">
+  <div class="gameboard rounded6">
     {{#each games}}
       {{> game}}<br />
     {{/each}}
