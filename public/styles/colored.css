@@ -30,7 +30,12 @@ h1 {
   margin-top: 0.8em;
   padding: 0.8em;
   background: #d6f1f9;
-
+  -moz-box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
 }
 .player .name {
   display: inline-block;
@@ -70,10 +75,16 @@ h1 {
   margin-top: 2em;
   color: #666;
   background: #d6f1f9;
+  -moz-box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
 }
 .gameboard .gameinfo {
   float: right;
-  color: #cccccc;
+  color: #999;
 }
 .gameboard .bigwin {
   color: red;
@@ -81,27 +92,21 @@ h1 {
 .gameboard .comments {
   position: relative;
   left: 2em;
-  color: #cccccc;
+  color: #999;
 }
 .copyright {
   margin-top: 2em;
   font-size: smaller;
-  color: #cccccc;
+  color: #ddd;
 }
-.gameboard .rounded-shadow-corners .timeago {
+.gameboard .timeago {
   color: #999999;
-
 }
 .onfire-icon {
   color: yellow;
   text-shadow: 0px 0px 4px #555;
 }
 
-.rounded6 {
-  -moz-box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
-  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
+.hand {
+    cursor: pointer;
 }

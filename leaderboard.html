@@ -35,7 +35,7 @@
 </template>
 
 <template name="player">
-  <div class="player {{selected}} {{ active }} {{ me }} rounded6">
+  <div class="player {{selected}} {{ active }} {{ me }}">
     <span class="avatar">
       {{#if avatar_url}}
         <img class="avatar_img" src="{{avatar_url}}" />
@@ -78,7 +78,7 @@
 </template>
 
 <template name="gameboard">
-  <div class="gameboard rounded6">
+  <div class="gameboard">
     {{#each games}}
       {{> game}}<br />
     {{/each}}
@@ -93,8 +93,9 @@
     {{timeago date}} · {{elodiff}} pelo
 
     {{#if currentUser}}
-      · <a class="comment"><i class="icon icon-reorder" /></a>
+      · <a class="comment"><i class="icon icon-reorder hand" /></a>
     {{/if}}
+
   </span>
 
   <span id="comment_ph_{{_id}}" class="comments hidden">
