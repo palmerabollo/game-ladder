@@ -1,13 +1,22 @@
 var HUMILIATION_MODE = false;
-var BIGWIN_THRESHOLD = 50;
+var BIGWIN_THRESHOLD = 70;
 var ONFIRE_THRESHOLD = 3;
+var DAYS_INACTIVE_THRESHOLD = 7;
 
 Players = new Meteor.Collection("players");
 Games = new Meteor.Collection("games");
 
 if (Meteor.isClient) {
+  Meteor.startup(function () {
+    plug_theme_switcher();
+  });
+
   Meteor.autorun(function () {
     ['players', 'games', 'user'].forEach(function(col) { Meteor.subscribe(col) });
+  });
+
+  Handlebars.registerHelper("timeago", function(date) {
+    return date ? moment(date).fromNow() : '';
   });
 
   Template.gameboard.games = function () {
@@ -29,7 +38,7 @@ if (Meteor.isClient) {
   Template.player.active = function () {
     var has_played = this.games_won + this.games_lost > 0;
     if (has_played) {
-      var is_frequent = moment().subtract('days', 7).isBefore(this.date_lastgame);
+      var is_frequent = moment().subtract('days', DAYS_INACTIVE_THRESHOLD).isBefore(this.date_lastgame);
       return is_frequent ? '' : 'inactive';
     }
     return 'inactive';
@@ -37,22 +46,6 @@ if (Meteor.isClient) {
 
   Template.player.humiliation_mode = function() {
     return HUMILIATION_MODE;
-  }
-
-  Template.player.timeago = function() {
-    return this.date_lastgame ? moment(this.date_lastgame).fromNow() : '';
-  }
-
-  Template.game.timeago = function() {
-    return moment(this.date).fromNow();
-  }
-
-  Template.game.bigwin = function() {
-    return this.elodiff > BIGWIN_THRESHOLD ? "bigwin" : "";
-  }
-
-  Template.game.onfire = function() {
-    return this.winner.consecutive_wins > ONFIRE_THRESHOLD;
   }
 
   Template.player.events({
@@ -93,7 +86,30 @@ if (Meteor.isClient) {
       }
     },
     'click .victory_advanced': function() {
-      $('#result_' + Session.get("selected_player")).show();
+      $('#result_ph_' + Session.get("selected_player")).show();
+    }
+  });
+
+  Template.game.bigwin = function() {
+    return this.elodiff > BIGWIN_THRESHOLD ? "bigwin" : "";
+  }
+
+  Template.game.onfire = function() {
+    return this.winner.consecutive_wins > ONFIRE_THRESHOLD;
+  }
+
+  Template.game.trim = function(text) {
+    return text.replace(/^(.{15}[^\s]*).*/, "$1");
+  }
+
+  Template.game.events({
+    'click .comment': function () {
+      $('#comment_ph_' + this._id).show();
+    },
+    'click .send': function () {
+      var me = Players.findOne({meteor_id: Meteor.userId()});
+      var text = $('#comment_' + this._id).val();
+      Games.update({_id: this._id}, { $push: {comments: {author: me, text: text, date_creation: new Date()} } }); 
     }
   });
 }
