@@ -106,10 +106,14 @@ if (Meteor.isClient) {
     'click .comment': function () {
       $('#comment_ph_' + this._id).show();
     },
-    'click .send': function () {
-      var me = Players.findOne({meteor_id: Meteor.userId()});
-      var text = $('#comment_' + this._id).val();
-      Games.update({_id: this._id}, { $push: {comments: {author: me, text: text, date_creation: new Date()} } }); 
+    'keypress .comment': function(event) {
+      if (event.keyCode === 13) {
+        var me = Players.findOne({meteor_id: Meteor.userId()});
+        var text = $('#comment_' + this._id).val();
+        if (text) {
+          Games.update({_id: this._id}, { $push: {comments: {author: me, text: text, date_creation: new Date()} } }); 
+        }
+      }
     }
   });
 }

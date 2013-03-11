@@ -14,7 +14,7 @@
   </div>
   <div class="outer copyright">
     powered by <a href="https://github.com/palmerabollo/game-ladder">game-ladder</a>
-    · theme:
+    · theme
     <select id="switcherTheme">
       <option selected="true" tag="./styles/minimal.css">Minimal</option>
       <option tag="./styles/colored.css">Colored</option>
@@ -95,12 +95,10 @@
     {{#if currentUser}}
       · <a class="comment"><i class="icon icon-reorder hand" /></a>
     {{/if}}
-
   </span>
 
   <span id="comment_ph_{{_id}}" class="comments hidden">
-    <input type="text" size="70" maxlength="70" id="comment_{{_id}}" />
-    <a class="link send">say it</a>
+    <input type="text" size="70" maxlength="70" class="comment" id="comment_{{_id}}" />
   </span>
 
   <span class="comments">

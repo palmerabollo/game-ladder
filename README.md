@@ -37,6 +37,8 @@ Released under the "DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE"
 
 **Contributors**:
 
-Juan Antonio Hernando ([@labajo]) 
+* Juan Antonio Hernando ([@labajo]) 
+* Álvaro Martínez ([@amarreo]) 
 
 [@labajo]: https://github.com/labajo
+[@amarreo]: https://github.com/amarreo
