@@ -61,6 +61,10 @@ h1 {
   font-size: 1.75em;
   color: black;
 }
+.player .avatar_img_mini {
+  width: 1.5em;
+  vertical-align: middle;
+}
 .player.selected {
   background-color: #ffff00;
 }
@@ -93,6 +97,7 @@ h1 {
   position: relative;
   left: 2em;
   color: #999;
+  font-size: smaller;
 }
 .copyright {
   margin-top: 2em;

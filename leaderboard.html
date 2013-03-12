@@ -47,7 +47,7 @@
     <br />
 
     {{games_won}} won · {{games_lost}} lost ·
-
+  
     {{#if humiliation_mode}}
       +{{points_scored}} -{{points_conceded}} ·
     {{/if}}
@@ -56,11 +56,19 @@
       {{#if date_lastgame}}last game {{timeago date_lastgame}}{{/if}}
     </span>
 
+    {{#if challenges}}
+      <br />
+      {{#each challenges}}
+        <img class="avatar_img_mini" title="pending challenge with {{you from}}" src="{{from.avatar_url}}" />
+      {{/each}}
+    {{/if}}
+
     {{#if selected}}
       {{#if currentUser}}
         {{#unless me}}
           <br />
-          <a class="link victory" href="#">claim my victory</a>
+          <a class="link victory" href="#">claim my victory</a> ·
+          <a class="link challenge">challenge</a>
 
           {{#if humiliation_mode}}
           ·
@@ -86,7 +94,7 @@
 </template>
 
 <template name="game">
-  {{trim winner.name}} won {{trim loser.name}}
+  {{you winner}} won {{you loser}}
 
   <span class="gameinfo {{ bigwin }}">
     {{#if onfire}}<i class="icon icon-star onfire-icon" title="{{winner.consecutive_wins}} victories in a row. on fire !" /> · {{/if}}

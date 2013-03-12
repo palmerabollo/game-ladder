@@ -40,6 +40,10 @@ body {
   font-size: 1.75em;
   color: black;
 }
+.player .avatar_img_mini {
+  width: 1.5em;
+  vertical-align: middle;
+}
 .player.selected {
   background-color: #ffff00;
 }
@@ -64,6 +68,7 @@ body {
   position: relative;
   left: 2em;
   color: #cccccc;
+  font-size: smaller;
 }
 .copyright {
   margin-top: 2em;

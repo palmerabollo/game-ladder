@@ -1,6 +1,6 @@
 var HUMILIATION_MODE = false;
 var BIGWIN_THRESHOLD = 70;
-var ONFIRE_THRESHOLD = 3;
+var ONFIRE_THRESHOLD = 4;
 var DAYS_INACTIVE_THRESHOLD = 7;
 
 Players = new Meteor.Collection("players");
@@ -17,6 +17,14 @@ if (Meteor.isClient) {
 
   Handlebars.registerHelper("timeago", function(date) {
     return date ? moment(date).fromNow() : '';
+  });
+
+  Handlebars.registerHelper("trim", function(text) {
+    return text.shorten(15);
+  });
+
+  Handlebars.registerHelper("you", function(player) {
+    return player.meteor_id === Meteor.userId() ? "YOU" : player.name.shorten(15);
   });
 
   Template.gameboard.games = function () {
@@ -52,6 +60,19 @@ if (Meteor.isClient) {
     'click': function () {
       Session.set("selected_player", this._id);
     },
+    'click .challenge': function () {
+      var player = Players.findOne(Session.get("selected_player"));
+      if (confirm('Are you sure you want to challenge ' + player.name + '?')) {
+        var me = Players.findOne({meteor_id: Meteor.userId()});
+        var challenge = { from: me, date: new Date() };
+
+        Players.update({meteor_id: Meteor.userId()}, { $pull: {challenges: {from: player}} }); 
+
+        // see https://jira.mongodb.org/browse/SERVER-1050 
+        Players.update(Session.get("selected_player"), { $pull: {challenges: {from: me}} }); 
+        Players.update(Session.get("selected_player"), { $push: {challenges: challenge} }); 
+      }
+    },
     'click .victory': function () {
       var player = Players.findOne(Session.get("selected_player"));
       var me = Players.findOne({meteor_id: Meteor.userId()});
@@ -80,9 +101,23 @@ if (Meteor.isClient) {
 
       if (confirm('Do you confirm you victory against ' + player.name + '?')) {
         var now = new Date();
-        Players.update(Session.get("selected_player"), {$set: {date_lastgame: now, consecutive_wins: 0}, $inc: {score: -elodiff, games_lost: 1, points_scored: lp, points_conceded: wp}});
-        Players.update({meteor_id: Meteor.userId()}, {$set: {date_lastgame: now}, $inc: {score: elodiff, games_won: 1, points_scored: wp, points_conceded: lp, consecutive_wins: 1}});
+
+        Players.update(Session.get("selected_player"), {
+          $set: {date_lastgame: now, consecutive_wins: 0}, 
+          $inc: {score: -elodiff, games_lost: 1, points_scored: lp || 0, points_conceded: wp || 0, consecutive_loses: 1},
+          $pull: {challenges: {from: me}}
+        });
+
+        Players.update({meteor_id: Meteor.userId()}, {
+          $set: {date_lastgame: now, consecutive_loses: 0},
+          $inc: {score: elodiff, games_won: 1, points_scored: wp || 0, points_conceded: lp || 0, consecutive_wins: 1},
+          $pull: {challenges: {from: player}}
+        });
         Games.insert({ winner: me, loser: player, date: now, elodiff: elodiff });
+
+        // remove pending challenges
+        Players.update(Session.get("selected_player"), { $pull: {challenges: {from: me}} });
+        Players.update({meteor_id: Meteor.userId()}, { $pull: {challenges: {from: player}} });  
       }
     },
     'click .victory_advanced': function() {
@@ -91,15 +126,11 @@ if (Meteor.isClient) {
   });
 
   Template.game.bigwin = function() {
-    return this.elodiff > BIGWIN_THRESHOLD ? "bigwin" : "";
+    return this.elodiff >= BIGWIN_THRESHOLD ? "bigwin" : "";
   }
 
   Template.game.onfire = function() {
-    return this.winner.consecutive_wins > ONFIRE_THRESHOLD;
-  }
-
-  Template.game.trim = function(text) {
-    return text.replace(/^(.{15}[^\s]*).*/, "$1");
+    return this.winner.consecutive_wins >= ONFIRE_THRESHOLD;
   }
 
   Template.game.events({
@@ -144,7 +175,9 @@ if (Meteor.isServer) {
                 points_scored: 0,
                 points_conceded: 0,
                 consecutive_wins: 0,
+                consecutive_loses: 0,
                 creation_date: new Date(),
+                challenges: [],
                 avatar_url: "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=small"
             };
           Players.insert(me);
@@ -159,7 +192,7 @@ if (Meteor.isServer) {
   }
 
   function resetRanking() {
-    Players.update({}, {$set: {score: 1000, games_won: 0, games_lost: 0, points_scored:0, points_conceded:0}}, {multi: true});
+    Players.update({}, {$set: {challenges: [], score: 1000, games_won: 0, games_lost: 0, points_scored: 0, points_conceded: 0}}, {multi: true});
   }
 
   Meteor.startup(function() {
