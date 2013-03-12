@@ -1,6 +1,8 @@
 <head>
   <title>ladderboard · claim your victory</title>
-    <link rel="stylesheet" href="./styles/font-awesome.min.css">
+  <link rel="stylesheet" href="./styles/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" tag="pageStyle" href="./styles/minimal.css">
+  <script type="text/javascript" src="./js/main.js"></script>
 </head>
 
 <body>
@@ -10,7 +12,14 @@
   <div class="outer">
     {{> gameboard}}
   </div>
-  <div class="outer copyright">powered by <a href="https://github.com/palmerabollo/game-ladder">game-ladder</a></div>
+  <div class="outer copyright">
+    powered by <a href="https://github.com/palmerabollo/game-ladder">game-ladder</a>
+    · theme
+    <select id="switcherTheme">
+      <option selected="true" tag="./styles/minimal.css">Minimal</option>
+      <option tag="./styles/colored.css">Colored</option>
+    </select>
+  </div>
 </body>
 
 <template name="leaderboard">
@@ -44,7 +53,7 @@
     {{/if}}
 
     <span class="inactive">
-      {{#if date_lastgame}}last game {{timeago}}{{/if}}
+      {{#if date_lastgame}}last game {{timeago date_lastgame}}{{/if}}
     </span>
 
     {{#if selected}}
@@ -56,7 +65,7 @@
           {{#if humiliation_mode}}
           ·
           <a class="link victory_advanced" href="#">optional info...</a>
-          <span id="result_{{_id}}" class="hidden">
+          <span id="result_ph_{{_id}}" class="hidden">
             <input type="text" size="2" maxlength="2" id="winner_points_{{_id}}" />
             -
             <input type="text" size="2" maxlength="2" id="loser_points_{{_id}}" />
@@ -77,9 +86,24 @@
 </template>
 
 <template name="game">
-  {{winner.name}} won {{loser.name}}
+  {{trim winner.name}} won {{trim loser.name}}
+
   <span class="gameinfo {{ bigwin }}">
-    {{#if onfire}}<i class="icon-star onfire-icon"></i> · {{/if}}
-    {{timeago}} · {{elodiff}} points
+    {{#if onfire}}<i class="icon icon-star onfire-icon" title="{{winner.consecutive_wins}} victories in a row. on fire !" /> · {{/if}}
+    {{timeago date}} · {{elodiff}} pelo
+
+    {{#if currentUser}}
+      · <a class="comment"><i class="icon icon-reorder hand" /></a>
+    {{/if}}
+  </span>
+
+  <span id="comment_ph_{{_id}}" class="comments hidden">
+    <input type="text" size="70" maxlength="70" class="comment" id="comment_{{_id}}" />
+  </span>
+
+  <span class="comments">
+    {{#each comments}}
+      <br /><i class="icon icon-quote-right" title="comment" /> {{trim author.name}}: {{text}}
+    {{/each}}
   </span>
 </template>
