@@ -89,7 +89,7 @@
   {{trim winner.name}} won {{trim loser.name}}
 
   <span class="gameinfo {{ bigwin }}">
-    {{#if onfire}}<i class="icon icon-star onfire-icon" /> · {{/if}}
+    {{#if onfire}}<i class="icon icon-star onfire-icon" title="{{winner.consecutive_wins}} victories in a row. on fire !" /> · {{/if}}
     {{timeago date}} · {{elodiff}} pelo
 
     {{#if currentUser}}
@@ -103,7 +103,7 @@
 
   <span class="comments">
     {{#each comments}}
-      <br /><i class="icon icon-quote-right" /> {{trim author.name}}: {{text}}
+      <br /><i class="icon icon-quote-right" title="comment" /> {{trim author.name}}: {{text}}
     {{/each}}
   </span>
 </template>
