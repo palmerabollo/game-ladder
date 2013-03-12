@@ -136,6 +136,7 @@ if (Meteor.isClient) {
   Template.game.events({
     'click .comment': function () {
       $('#comment_ph_' + this._id).show();
+      $('#comment_ph_' + this._id + '> input').focus();
     },
     'keypress .comment': function(event) {
       if (event.keyCode === 13) {
