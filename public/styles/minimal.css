@@ -1,84 +1,87 @@
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 200;
-  margin: 2em 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 200;
+    margin: 2em 0;
 }
 .hidden {
-  display: none;
+    display: none;
 }
 .link {
-  cursor: pointer;
-  text-decoration: underline;
+    cursor: pointer;
+    text-decoration: underline;
 }
 .header {
-  text-align: right;
-  margin-bottom: 2em;
-  width: 520px;
+    text-align: right;
+    margin-bottom: 2em;
+    width: 520px;
 }
 .outer {
-  width: 600px;
-  margin: 0 auto;
+    width: 600px;
+    margin: 0 auto;
 }
 .player {
-  border-bottom: 1px dotted lightgray;
-  cursor: pointer;
-  padding: 0.8em;
+    border-bottom: 1px dotted lightgray;
+    cursor: pointer;
+    padding: 0.8em;
+    height: 75px;
 }
 .player .name {
-  display: inline-block;
-  width: 400px;
-  font-size: 1.75em;
+    display: inline-block;
+    width: 400px;
+    font-size: 1.75em;
+}
+.player:hover {
+    background-color: #ffffcc;
 }
 .player .avatar {
-  float: left;
-  margin-right: 1em;
+    float: left;
+    margin-right: 1em;
+    height; 75px;
 }
 .player .score {
-  display: inline-block;
-  width: 100px;
-  text-align: right;
-  font-size: 1.75em;
-  color: black;
-}
-.player .avatar_img_mini {
-  width: 1.5em;
-  vertical-align: middle;
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    font-size: 1.75em;
+    color: black;
 }
 .player.selected {
-  background-color: #ffff00;
+    background-color: #ffff00;
+}
+.player:hover {
+    background-color: #ffffcc;
 }
 .player.me {
-  background-color: #eeeeff;
+    background-color: #eeeeff;
 }
 .inactive {
-  color: #cccccc;
+    color: #cccccc;
 }
 .gameboard {
-  margin-top: 2em;
-  color: #777;
+    margin-top: 2em;
+    color: #777;
 }
 .gameboard .gameinfo {
-  float: right;
-  color: #cccccc;
+    float: right;
+    color: #cccccc;
 }
 .gameboard .bigwin {
-  color: red;
+    color: red;
 }
 .gameboard .comments {
-  position: relative;
-  left: 2em;
-  color: #cccccc;
-  font-size: smaller;
+    position: relative;
+    left: 2em;
+    color: #cccccc;
 }
 .copyright {
-  margin-top: 2em;
-  font-size: smaller;
-  color: #cccccc;
+    margin-top: 2em;
+    font-size: smaller;
+    color: #cccccc;
 }
 .onfire-icon {
-  color: yellow;
-  text-shadow: 0px 0px 4px #555;
+    color: yellow;
+    text-shadow: 0px 0px 4px #555;
 }
 .hand {
-  cursor: pointer;
+    cursor: pointer;
 }
