@@ -9,6 +9,7 @@ Games = new Meteor.Collection("games");
 if (Meteor.isClient) {
   Meteor.startup(function () {
     plug_theme_switcher();
+    emoji_set_up();
   });
 
   Meteor.autorun(function () {
@@ -148,6 +149,10 @@ if (Meteor.isClient) {
       }
     }
   });
+
+  Template.game.rendered = function() {
+    emojify.runOverElement($('.gameboard')[0]);
+  };
 }
 
 if (Meteor.isServer) {
