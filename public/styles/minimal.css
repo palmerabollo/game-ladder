@@ -23,6 +23,7 @@ body {
   border-bottom: 1px dotted lightgray;
   cursor: pointer;
   padding: 0.8em;
+  height: 75px;
 }
 .player .name {
   display: inline-block;
@@ -32,6 +33,7 @@ body {
 .player .avatar {
   float: left;
   margin-right: 1em;
+  height: 75px;
 }
 .player .score {
   display: inline-block;
@@ -39,6 +41,9 @@ body {
   text-align: right;
   font-size: 1.75em;
   color: black;
+}
+.player:hover {
+    background-color: #ffffcc;
 }
 .player .avatar_img_mini {
   width: 1.5em;
