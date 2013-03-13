@@ -36,6 +36,7 @@ h1 {
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
+  height; 75px;
 }
 .player .name {
   display: inline-block;
@@ -45,6 +46,10 @@ h1 {
 .player .avatar {
   float: left;
   margin-right: 1em;
+  height; 75px;
+}
+.player:hover {
+    background-color: #ffffcc;
 }
 .player .avatar .avatar_img {
   -moz-box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.5);
